@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 
 import { DomSanitizer } from '@angular/platform-browser';
 
-import { saveAs } from 'file-saver';
+import * as FileSaver from 'file-saver';
 // this.myService.downloadFile(this.id).subscribe(blob => {
 //           importedSaveAs(blob, this.fileName);
 //       }
@@ -46,5 +46,15 @@ export class AppComponent {
 
       b.click();
     };
+  }
+  downloadfiledata() {
+    var decodedPdfContent = atob(this.base64String);
+    var byteArray = new Uint8Array(decodedPdfContent.length);
+    for (var i = 0; i < decodedPdfContent.length; i++) {
+      byteArray[i] = decodedPdfContent.charCodeAt(i);
+    }
+    this.newvalue = new Blob([byteArray.buffer], { type: 'application/pdf' });
+    let blob = new Blob([byteArray.buffer], { type: 'application/pdf' });
+    FileSaver.saveAs(blob, "export.pdf");
   }
 }
