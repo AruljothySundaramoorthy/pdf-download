@@ -127,4 +127,45 @@ export class AppComponent {
   downloader2() {
     window.open('http://localhost:2552/docs', '_blank')
   }
+  downloadable1() {
+    var decodedPdfContent = atob(this.base64String);
+    var byteArray = new Uint8Array(decodedPdfContent.length);
+    for (var i = 0; i < decodedPdfContent.length; i++) {
+      byteArray[i] = decodedPdfContent.charCodeAt(i);
+    }
+    this.newvalue = new Blob([byteArray.buffer], { type: 'application/pdf' });
+    let blob = new Blob([byteArray.buffer], { type: 'application/pdf' });
+
+    const fileName = 'example.pdf'
+    const reader = new FileReader()
+    reader.onloadend = () => {
+      const link: any = document.createElement("a")
+      link.href = reader.result
+      link.style.display = 'none'
+      link.download = fileName
+      document.body.appendChild(link)
+      link.click()
+      link.parentNode.removeChild(link)
+    }
+    reader.readAsDataURL(blob)
+  }
+
+  testdownloadFile() {
+    // let dataType = response.type;
+    // let binaryData = [];
+    // binaryData.push(response);
+    var decodedPdfContent = atob(this.base64String);
+    var byteArray = new Uint8Array(decodedPdfContent.length);
+    for (var i = 0; i < decodedPdfContent.length; i++) {
+      byteArray[i] = decodedPdfContent.charCodeAt(i);
+    }
+    let blob = new Blob([byteArray.buffer], { type: 'application/pdf' });
+    let downloadLink = document.createElement('a');
+    downloadLink.href = window.URL.createObjectURL(blob);
+    // if (filename)
+    downloadLink.setAttribute('download', 'BmoDraftDocument.pdf');
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    // }
+  }
 }
